@@ -71,6 +71,21 @@ function handler_exception($e)
     $whoops->pushHandler($handler);
     $whoops->allowQuit(false);
     $whoops->writeToOutput(false);
+    $whoops->register();
+
+    // Adding a comment
+    $whoops->pushHandler(function ($exception, $inspector, $run) {
+
+    $inspector->getFrames()->map(function ($frame) {
+
+      if ($function = $frame->getFunction()) {
+          $frame->addComment("Report an issue on GitHub: https://github.com/boxbilling/boxbilling/issues", "Need some help?");
+      }
+
+      return $frame;
+  });
+
+});
 
     $html = $whoops->handleException($e);
     if(defined('BB_DEBUG') && BB_DEBUG) {
