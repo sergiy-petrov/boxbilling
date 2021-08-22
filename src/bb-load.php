@@ -61,12 +61,13 @@ function handler_exception($e)
         return false;
     }
 
-    $whoops = new \Whoops\Run;
     $handler = new \Whoops\Handler\PrettyPageHandler;
     $handler->addDataTable('BoxBilling environment', [
       'PHP Version' => phpversion(),
       'Error code' => $e->getCode()
     ]);
+    $handler->setPageTitle("An error ocurred");
+    $whoops = new \Whoops\Run;
     $whoops->pushHandler($handler);
     $whoops->allowQuit(false);
     $whoops->writeToOutput(false);
